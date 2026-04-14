@@ -1,0 +1,30 @@
+server:
+  port: 0
+
+spring:
+  datasource:
+    url: jdbc:sqlite:${java.io.tmpdir}/zentea-test.db
+    driver-class-name: org.sqlite.JDBC
+  sql:
+    init:
+      mode: never
+
+mybatis-plus:
+  configuration:
+    map-underscore-to-camel-case: true
+  global-config:
+    db-config:
+      id-type: auto
+
+zentea:
+  db:
+    path: ${java.io.tmpdir}/zentea-test.db
+  jwt:
+    secret: test-secret-key-that-is-at-least-256-bits-long-for-hs256-algorithm-testing
+    access-token-expiration: 900000
+    refresh-token-expiration: 604800000
+
+logging:
+  level:
+    com.zentea: INFO
+    org.springframework: WARN

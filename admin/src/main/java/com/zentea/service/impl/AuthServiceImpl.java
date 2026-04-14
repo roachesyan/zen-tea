@@ -69,6 +69,8 @@ public class AuthServiceImpl implements AuthService {
         }
 
         log.info("User logged in: {}", user.getUsername());
+        refreshTokenMapper.delete(
+                new LambdaQueryWrapper<RefreshToken>().eq(RefreshToken::getUserId, user.getId()));
         return generateLoginResponse(user);
     }
 

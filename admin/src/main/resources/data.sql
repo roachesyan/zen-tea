@@ -1,6 +1,6 @@
 -- Admin account (password: admin123, BCrypt encoded)
 INSERT INTO user (username, password, nickname, role, status)
-VALUES ('admin', '$2a$10$N.zmdr9k7uOCQb376NoUnuTJ8iAt6Z5EHsM8lE9lBOsl7iKTVKIUi', '管理员', 'ADMIN', 1);
+VALUES ('admin', '$2a$10$VDJ6SsTzYIr62tsNcfWipeUJoR/BARfzrobwS7UN5UDksSn9jJ5yi', '管理员', 'ADMIN', 1);
 
 -- Default categories
 INSERT INTO category (name, icon, sort, status) VALUES ('经典奶茶', '🧋', 1, 1);
