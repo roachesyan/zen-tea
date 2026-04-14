@@ -1,0 +1,32 @@
+# Compiled class files
+*.class
+target/
+
+# Database
+*.db
+
+# Logs
+logs/
+*.log
+
+# IDE
+.idea/
+*.iml
+.vscode/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Environment
+.env
+.env.local
+
+# Claude
+.claude/
+
+# Node
+node_modules/
+dist/
