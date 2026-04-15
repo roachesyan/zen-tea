@@ -1,19 +1,27 @@
 <template>
   <div class="page menu-page">
-    <van-nav-bar title="菜单" />
+    <van-nav-bar title="菜单" class="menu-nav" />
 
     <div class="menu-body">
       <div class="menu-sidebar">
+        <div class="sidebar-header">
+          <span class="sidebar-header-text">分类</span>
+        </div>
         <van-sidebar v-model="activeCategory" @change="handleCategoryChange">
           <van-sidebar-item
             v-for="cat in categories"
             :key="cat.id"
             :label="cat.name"
+            :title="cat.name"
           />
         </van-sidebar>
       </div>
 
       <div class="menu-content">
+        <div v-if="activeCat" class="category-banner">
+          <span class="category-banner-name">{{ activeCat.name }}</span>
+          <span class="category-banner-count">{{ products.length }} 款</span>
+        </div>
         <van-loading v-if="loading" class="menu-loading" />
         <EmptyState v-else-if="products.length === 0" description="暂无商品" />
         <template v-else>
@@ -36,7 +44,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, watch } from 'vue'
+import { ref, computed, onMounted, watch } from 'vue'
 import { useRoute } from 'vue-router'
 import { showSuccessToast } from 'vant'
 import ProductCard from '@/components/product/ProductCard.vue'
@@ -57,6 +65,8 @@ const selectedProduct = ref<Product | null>(null)
 
 const categories = ref(productStore.categories)
 const products = ref<Product[]>([])
+
+const activeCat = computed(() => categories.value[activeCategory.value])
 
 onMounted(async () => {
   await productStore.fetchCategories()
@@ -114,6 +124,18 @@ function handleSpecConfirm(specs: ProductSpecs) {
 </script>
 
 <style scoped lang="scss">
+@import '@/assets/styles/variables.scss';
+
+.menu-nav {
+  :deep(.van-nav-bar) {
+    background: linear-gradient(135deg, $tea-primary, $tea-accent);
+  }
+  :deep(.van-nav-bar__title) {
+    // color: #fff;
+    font-weight: 600;
+  }
+}
+
 .menu-body {
   display: flex;
   height: calc(100vh - 46px - 50px);
@@ -123,13 +145,68 @@ function handleSpecConfirm(specs: ProductSpecs) {
   width: 90px;
   flex-shrink: 0;
   overflow-y: auto;
-  background: #f7f8fa;
+  background: $tea-warm-bg;
+
+  .sidebar-header {
+    padding: 14px 0 8px;
+    text-align: center;
+
+    .sidebar-header-text {
+      font-size: 11px;
+      color: $tea-primary;
+      font-weight: 600;
+      letter-spacing: 2px;
+    }
+  }
+
+  :deep(.van-sidebar) {
+    background: transparent;
+  }
+
+  :deep(.van-sidebar-item) {
+    background: transparent;
+    color: $text-secondary;
+    font-size: 13px;
+    padding: 14px 8px;
+    transition: all 0.2s ease;
+  }
+
+  :deep(.van-sidebar-item--select) {
+    background: #fff;
+    color: $tea-primary;
+    font-weight: 600;
+
+    &::before {
+      background: $tea-primary;
+      border-radius: 0 3px 3px 0;
+      width: 3px;
+    }
+  }
 }
 
 .menu-content {
   flex: 1;
   overflow-y: auto;
   background: #fff;
+}
+
+.category-banner {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  padding: 14px 16px 8px;
+  border-bottom: 1px solid $tea-primary-lighter;
+
+  .category-banner-name {
+    font-size: 16px;
+    font-weight: 600;
+    color: $text-color;
+  }
+
+  .category-banner-count {
+    font-size: 12px;
+    color: $text-secondary;
+  }
 }
 
 .menu-loading {
