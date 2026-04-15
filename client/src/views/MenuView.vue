@@ -22,7 +22,18 @@
           <span class="category-banner-name">{{ activeCat.name }}</span>
           <span class="category-banner-count">{{ products.length }} 款</span>
         </div>
-        <van-loading v-if="loading" class="menu-loading" />
+        <div v-if="loading" class="menu-skeleton">
+          <van-skeleton
+            v-for="i in 6"
+            :key="i"
+            title
+            avatar
+            avatar-shape="square"
+            avatar-size="90px"
+            :row="2"
+            class="product-skeleton"
+          />
+        </div>
         <EmptyState v-else-if="products.length === 0" description="暂无商品" />
         <template v-else>
           <ProductCard
